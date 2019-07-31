@@ -19,6 +19,8 @@ def main():
                         default=('Type', 'Report Type',
                                  'Date Added', 'Modified', 'Institution'),
                         help='The fields to remove')
+    parser.add_argument('-o', '--output', metavar='', default='out.html',
+                        help='The output file')
 
     # parse the arguments and store the list of unwanted fields
     args = parser.parse_args()
@@ -35,11 +37,11 @@ def main():
     # iterate through through articles and remove unwanted fields
     for article in filter(stringFilter, soup.body.ul.children):
         for field in filter(decomposeFilter, article.table.tbody.children):
-            print('decomposing: ' + field.get_text())
+            # print('decomposing: ' + field.get_text())
             field.decompose()
 
     # clean-up formatting and write results to file
-    f = open("assets\out.html", "w+")
+    f = open("assets\\"+args.output, 'w+')
     f.write(soup.prettify())
 
 

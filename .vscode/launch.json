@@ -19,7 +19,7 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "args": ["-s assets\\Zotero Report.html", "-r report_type date_added modified Language"]
+            "args": ["-s assets\\Zotero Report.html", "-r report_type date_added modified Language type Institution"]
         },
         {
             "name": "Python: Current File (Integrated Terminal)",
