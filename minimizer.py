@@ -10,6 +10,7 @@ filter_fields = ('Type', 'Report Type', 'Date Added',
 
 def main():
     global filter_fields
+
     # create an argprase object to recieve CLI arguments
     parser = argparse.ArgumentParser(description="Remove unwanted fields"
                                      "from a zotero HTML report")
@@ -37,11 +38,16 @@ def main():
     # iterate through through articles and remove unwanted fields
     for article in filter(stringFilter, soup.body.ul.children):
         for field in filter(decomposeFilter, article.table.tbody.children):
-            # print('decomposing: ' + field.get_text())
             field.decompose()
 
+    # remove listings of attachments
+    if 'Attachments' in filter_fields:
+        attachments = soup.find_all(attrs={"class": "attachments"})
+        for item in attachments:
+            item.decompose()
+
     # clean-up formatting and write results to file
-    f = open("assets\\"+args.output, 'w+')
+    f = open("assets\\" + args.output, 'w+')
     f.write(soup.prettify())
 
 
@@ -55,6 +61,7 @@ def decomposeFilter(s) -> bool:
         return s.th.get_text() in filter_fields
     else:
         return False
+
 
 # run main() if invoked directly
 if __name__ == "__main__":
